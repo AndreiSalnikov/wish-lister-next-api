@@ -3,7 +3,7 @@ const VKontakteStrategy = require('passport-vkontakte').Strategy;
 
 const vkClientID = '51646210';
 const vkClientSecret = 'HrhQ2Omv7qVBIgYELFvg';
-const vkRedirectURI = 'https://wish-lister.ru/auth/vk/callback';
+const vkRedirectURI = 'https://wish-lister.ru/lists';
 
 passport.use(
   new VKontakteStrategy(
@@ -17,7 +17,6 @@ passport.use(
       // Here, you can access the user's VK.com profile information
       // and perform any necessary operations like user authentication or account creation
       // 'profile' object contains the user's VK.com profile data
-
       // Example:
       const user = {
         vkontakteId: profile.id,
