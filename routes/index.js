@@ -32,8 +32,8 @@ router.get('/user/auth/vk/callback', (req, res, next) => {
       return res.redirect('/');
     }
 
+    return res.send(user);
     // Authentication succeeded, redirect to successRedirect URL or handle the success response
-    return res.redirect('/lists');
   })(req, res, next);
 });
 
