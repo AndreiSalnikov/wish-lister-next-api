@@ -5,10 +5,6 @@ const {
   login, createUser, logout,
 } = require('../controllers/users');
 
-router.get('/auth/vk', passport.authenticate('vkontakte', {
-  scope: ['email', 'friends'],
-}));
-
 router.get('/auth/vk/callback', passport.authenticate('vkontakte', {
   successRedirect: '/lists',
   failureRedirect: '/',

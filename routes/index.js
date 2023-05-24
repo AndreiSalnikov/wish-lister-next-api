@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const passport = require('passport');
 const auth = require('../middlewares/auth');
 const NotFound = require('../errors/NotFound');
 const authRouter = require('./auth');
@@ -12,6 +13,9 @@ const { NOT_FOUND_PAGE } = require('../utils/constants');
 
 router.use('', authRouter);
 // router.use('/user', authRouter);
+router.get('user/auth/vk', passport.authenticate('vkontakte', {
+  scope: ['email', 'friends'],
+}));
 router.get('/lists/:id', getList);
 router.use(auth);
 router.get('/lists/edit/:id', getList);
