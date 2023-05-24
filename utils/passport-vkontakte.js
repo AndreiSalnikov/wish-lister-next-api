@@ -3,7 +3,7 @@ const VKontakteStrategy = require('passport-vkontakte').Strategy;
 
 const vkClientID = '51646210';
 const vkClientSecret = 'HrhQ2Omv7qVBIgYELFvg';
-const vkRedirectURI = 'http://localhost:4200/auth/vk/callback';
+const vkRedirectURI = 'https://wish-lister.ru/auth/vk/callback';
 
 passport.use(
   new VKontakteStrategy(

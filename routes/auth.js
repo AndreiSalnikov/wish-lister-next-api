@@ -5,10 +5,7 @@ const {
   login, createUser, logout,
 } = require('../controllers/users');
 
-router.get('/auth/vk/callback', passport.authenticate('vkontakte', {
-  successRedirect: '/lists',
-  failureRedirect: '/',
-}));
+
 
 router.get('/auth/mailru', passport.authenticate('mailru'));
 
