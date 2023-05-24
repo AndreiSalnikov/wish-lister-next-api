@@ -10,10 +10,9 @@ passport.use(new MailruStrategy(
     clientSecret: MAIL_APP_SECRET,
     callbackURL: 'https://wish-lister.ru/auth/mail/callback',
   },
-function(accessToken, refreshToken, profile, cb) {
- //   return cb(err,user)
-/*    User.findOrCreate({ mailId: profile.id }, function (err, user) {
-    return cb(err, user);
-  });*/
-},
+  (accessToken, refreshToken, profile, done) => {
+    // Here, you can process the user profile or save the access token
+    // and call the `done` function to proceed with authentication
+    return done(null, profile);
+  },
 ));

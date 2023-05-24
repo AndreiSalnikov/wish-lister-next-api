@@ -5,15 +5,14 @@ const {
   login, createUser, logout,
 } = require('../controllers/users');
 
-// router.use('', authRouter);
-// // router.use('/user', authRouter);
-// router.get('/user/auth/vk', passport.authenticate('vkontakte', {
-//   scope: ['email', 'friends'],
-// }));
-// router.get('/auth/vk/callback', passport.authenticate('vkontakte', {
-//   successRedirect: '/lists',
-//   failureRedirect: '/',
-// }));
+
+router.get('/user/auth/vk', passport.authenticate('vkontakte', {
+  scope: ['email', 'friends'],
+}));
+router.get('/auth/vk/callback', passport.authenticate('vkontakte', {
+  successRedirect: '/lists',
+  failureRedirect: '/',
+}));
 
 /*
 router.get('/auth/mailru', passport.authenticate('mailru'));

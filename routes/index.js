@@ -11,6 +11,14 @@ const {
 
 const { NOT_FOUND_PAGE } = require('../utils/constants');
 
+router.get('/user/auth/vk', passport.authenticate('vkontakte', {
+  scope: ['email', 'friends'],
+}));
+router.get('/user/auth/vk/callback', passport.authenticate('vkontakte', {
+  successRedirect: '/lists',
+  failureRedirect: '/',
+}));
+
 router.get('/auth/mailru', passport.authenticate('mailru'));
 
 router.get('/auth/mailru/callback', passport.authenticate('mailru', {
