@@ -14,10 +14,28 @@ const { NOT_FOUND_PAGE } = require('../utils/constants');
 router.get('/user/auth/vk', passport.authenticate('vkontakte', {
   scope: ['email', 'friends'],
 }));
-router.get('/user/auth/vk/callback', passport.authenticate('vkontakte', {
+/*router.get('/user/auth/vk/callback', passport.authenticate('vkontakte', {
   successRedirect: '/lists',
   failureRedirect: '/',
-}));
+}));*/
+
+router.get('/user/auth/vk/callback', (req, res, next) => {
+  passport.authenticate('vkontakte', (err, user, info) => {
+    if (err) {
+      // Handle the error here
+      console.error(err);
+      return res.redirect('/error'); // Redirect to an error page or handle the error response
+    }
+
+    if (!user) {
+      // Authentication failed, redirect to failureRedirect URL or handle the failure response
+      return res.redirect('/');
+    }
+
+    // Authentication succeeded, redirect to successRedirect URL or handle the success response
+    return res.redirect('/lists');
+  })(req, res, next);
+});
 
 router.get('/auth/mailru', passport.authenticate('mailru'));
 
