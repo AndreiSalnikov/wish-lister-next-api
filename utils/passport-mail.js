@@ -8,9 +8,10 @@ passport.use(new MailruStrategy(
   {
     clientID: MAIL_APP_ID,
     clientSecret: MAIL_APP_SECRET,
-    callbackURL: 'http://localhost:4200/auth/mail/callback',
+    callbackURL: 'https://wish-lister.ru/auth/mail/callback',
   },
 function(accessToken, refreshToken, profile, cb) {
+ //   return cb(err,user)
 /*    User.findOrCreate({ mailId: profile.id }, function (err, user) {
     return cb(err, user);
   });*/

@@ -9,17 +9,16 @@ const {
   getList,
 } = require('../controllers/giftList');
 
-const {NOT_FOUND_PAGE} = require('../utils/constants');
+const { NOT_FOUND_PAGE } = require('../utils/constants');
 
-router.use('', authRouter);
-// router.use('/user', authRouter);
-router.get('/user/auth/vk', passport.authenticate('vkontakte', {
-  scope: ['email', 'friends'],
-}));
-router.get('/auth/vk/callback', passport.authenticate('vkontakte', {
+router.get('/auth/mailru', passport.authenticate('mailru'));
+
+router.get('/auth/mailru/callback', passport.authenticate('mailru', {
   successRedirect: '/lists',
   failureRedirect: '/',
 }));
+router.use('', authRouter);
+// router.use('/user', authRouter);
 router.get('/lists/:id', getList);
 router.use(auth);
 router.get('/lists/edit/:id', getList);
