@@ -19,6 +19,7 @@ passport.use(
       // 'profile' object contains the user's VK.com profile data
       // Example:
       const user = {
+        profile,
         vkontakteId: profile.id,
         displayName: profile.displayName,
         // ... add more user data as needed
