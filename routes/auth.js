@@ -9,18 +9,10 @@ router.get('/user/auth/vk', passport.authenticate('vkontakte', {
   scope: ['email', 'friends'],
 }));
 
-router.get('/user/auth/vk/callback',
-  passport.authenticate('vkontakte',
-    {
-      successRedirect: '/lists',
-      failureRedirect: '/',
-    },
-(err) => {
-      if (err) {
-        console.error(err)
-      }
-    },
-));
+router.get('/user/auth/vk/callback', passport.authenticate('vkontakte', {
+  successRedirect: '/lists',
+  failureRedirect: '/',
+}));
 
 /*
 router.get('/auth/mailru', passport.authenticate('mailru'));
