@@ -22,6 +22,8 @@ passport.use(
         profile,
         vkontakteId: profile.id,
         displayName: profile.displayName,
+        email: profile.emails.value,
+        ava: profile.photo_200,
         // ... add more user data as needed
       };
       // Call the 'done' callback to complete the authentication process
