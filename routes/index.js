@@ -13,8 +13,7 @@ const giftListRouter = require('./giftList');
 const {
   getList,
 } = require('../controllers/giftList');
-const {NOT_FOUND_PAGE} = require('../utils/constants');
-const {loginWithSocials} = require("../controllers/users");
+const { NOT_FOUND_PAGE } = require('../utils/constants');
 
 router.get('/user/auth/vk', passport.authenticate('vkontakte', {
   scope: ['email', 'friends'],
@@ -40,7 +39,7 @@ router.get('/user/auth/vk/callback', (req, res, next) => {
 
     User.findOrCreate(user.email.toLowerCase(), userData)
       .then((user) => {
-        const token = jwt.sign({ _id: user._id }, config.JWT_SECRET);
+        const token = jwt.sign({_id: user._id}, config.JWT_SECRET);
         res.cookie('token', token, {
           maxAge: 3600000 * 24 * 7,
           httpOnly: true,
@@ -49,10 +48,17 @@ router.get('/user/auth/vk/callback', (req, res, next) => {
         });
 
         // Send a response indicating successful authentication
-        res.status(200).json({ message: 'Успешный вход' });
+        const rs = { message: 'Успешный вход' };
+        const msg = rs.message;
+        res.status(200).json({ msg });
+
+        setTimeout(() => {
+          res.send('<script>window.close();</script>');
+        }, 1000);
+
       })
-      .catch((err) => {
-        next(err);
+      .catch((error) => {
+        next(error);
       });
   })(req, res, next);
 });
