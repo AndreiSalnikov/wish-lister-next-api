@@ -49,7 +49,7 @@ router.get('/user/auth/vk/callback', (req, res, next) => {
 
         // Send a response indicating successful authentication
 
-        res.status(200).json({ message: 'Успешный вход' });
+       // res.status(200).json({ message: 'Успешный вход' });
 
         res.redirect('/');
         // setTimeout(() => {
