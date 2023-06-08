@@ -47,7 +47,22 @@ router.get('/user/auth/vk/callback', (req, res, next) => {
           secure: true,
         });
 
-        res.send('Успех');
+        const htmlContent = `
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <title>Success</title>
+            </head>
+            <body>
+              Success.
+              <script type="text/javascript">
+                window.close();
+              </script>
+            </body>
+          </html>
+        `;
+
+        res.send(htmlContent);
       })
       .catch((error) => {
         next(error);
