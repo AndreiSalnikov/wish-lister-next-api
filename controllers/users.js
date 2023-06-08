@@ -13,7 +13,8 @@ const {
 } = require('../utils/constants');
 
 module.exports.loginWithSocials = (req, res, next, user) => {
-  const {email} = user;
+  console.log(user)
+ /* const {email} = user;
 
   User.findOrCreate({email}, {email: user.email, name: user.displayName, avatar: user.ava, password: "-"})
     .then((user) => {
@@ -27,7 +28,7 @@ module.exports.loginWithSocials = (req, res, next, user) => {
     })
     .catch((err) => {
       next(err);
-    });
+    });*/
 };
 
 
