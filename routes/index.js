@@ -1,3 +1,8 @@
+const User = require('../models/user');
+const jwt = require('jsonwebtoken');
+const config = require('../utils/config');
+
+
 const router = require('express').Router();
 const passport = require('passport');
 const auth = require('../middlewares/auth');
@@ -8,15 +13,14 @@ const giftListRouter = require('./giftList');
 const {
   getList,
 } = require('../controllers/giftList');
-
-const { NOT_FOUND_PAGE } = require('../utils/constants');
+const {NOT_FOUND_PAGE} = require('../utils/constants');
 const {loginWithSocials} = require("../controllers/users");
 
 router.get('/user/auth/vk', passport.authenticate('vkontakte', {
   scope: ['email', 'friends'],
 }));
 
-router.get('/user/auth/vk/callback', (req, res, next) => {
+/*router.get('/user/auth/vk/callback', (req, res, next) => {
   passport.authenticate('vkontakte', (err, user, info) => {
     if (err) {
       // Handle the error here
@@ -29,10 +33,55 @@ router.get('/user/auth/vk/callback', (req, res, next) => {
       return res.redirect('/');
     }
 
-   return loginWithSocials(req,res,next,user);
+    User.findOrCreate({email}, {email: email, name: user.displayName, avatar: user.ava, password: "-"})
+      .then((user1) => {
+        const token = jwt.sign({_id: user1._id}, config.JWT_SECRET);
+        res.cookie('token', token, {
+          maxAge: 3600000 * 24 * 7,
+          httpOnly: true,
+          sameSite: 'none',
+          secure: true,
+        }).json({message: 'Успешный вход'}).catch((err) => {
+          next(err);
+        });
+      })
 
-   // return res.send(user);
+    // return res.send(user);
     // Authentication succeeded, redirect to successRedirect URL or handle the success response
+  })(req, res, next);
+});*/
+
+router.get('/user/auth/vk/callback', (req, res, next) => {
+  passport.authenticate('vkontakte', (err, user, info) => {
+    if (err) {
+      console.error(err);
+      return res.redirect('/error');
+    }
+
+    if (!user) {
+      return res.redirect('/');
+    }
+
+    const userData = {
+      email: user.email,
+      name: user.displayName,
+      avatar: user.ava,
+      password: '-'
+    };
+
+    User.findOrCreate(user.email, userData)
+      .then((user) => {
+        const token = jwt.sign({ _id: user._id }, config.JWT_SECRET);
+        res.cookie('token', token, {
+          maxAge: 3600000 * 24 * 7,
+          httpOnly: true,
+          sameSite: 'none',
+          secure: true,
+        }).json({ message: 'Успешный вход' });
+      })
+      .catch((err) => {
+        next(err);
+      });
   })(req, res, next);
 });
 

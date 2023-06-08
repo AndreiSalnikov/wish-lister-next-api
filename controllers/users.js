@@ -13,10 +13,9 @@ const {
 } = require('../utils/constants');
 
 module.exports.loginWithSocials = (req, res, next, user) => {
-  console.log(user)
- /* const {email} = user;
+  const {email} = user;
 
-  User.findOrCreate({email}, {email: user.email, name: user.displayName, avatar: user.ava, password: "-"})
+  User.findOrCreate({email}, {email: email, name: user.displayName, avatar: user.ava, password: "-"})
     .then((user) => {
       const token = jwt.sign({_id: user._id}, config.JWT_SECRET);
       res.cookie('token', token, {
@@ -28,7 +27,7 @@ module.exports.loginWithSocials = (req, res, next, user) => {
     })
     .catch((err) => {
       next(err);
-    });*/
+    });
 };
 
 

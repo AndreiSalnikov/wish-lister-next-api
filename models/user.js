@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const findOrCreate = require('mongoose-findorcreate');
 const isEmail = require('validator/lib/isEmail');
 const bcrypt = require('bcryptjs');
 const UnauthorizedError = require('../errors/UnauthorizedError');
@@ -53,7 +52,18 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
-userSchema.plugin(findOrCreate);
+userSchema.statics.findOrCreate = function (email, userData) {
+  // Find the user with the provided email
+  return this.findOne({ email })
+    .then((user) => {
+      if (user) {
+        // If the user already exists, return it
+        return user;
+      }
+      // If the user does not exist, create a new user with the provided data
+      return this.create(userData);
+    });
+};
 
 userSchema.statics.findUserByCredentials = function (email, password) {
   return this.findOne({ email }).select('+password')
