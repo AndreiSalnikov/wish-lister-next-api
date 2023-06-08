@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
+const findOrCreate = require('mongoose-findorcreate');
 const isEmail = require('validator/lib/isEmail');
 const bcrypt = require('bcryptjs');
 const UnauthorizedError = require('../errors/UnauthorizedError');
+
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -27,6 +29,7 @@ const userSchema = new mongoose.Schema({
   reminder: {
     type: Boolean,
     required: true,
+    default: true,
   },
   createdAt: {
     type: Date,
@@ -50,8 +53,10 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
+userSchema.plugin(findOrCreate);
+
 userSchema.statics.findUserByCredentials = function (email, password) {
-  return this.findOne({email}).select('+password')
+  return this.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
         return Promise.reject(new UnauthorizedError('Неправильные почта или пароль'));

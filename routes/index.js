@@ -10,6 +10,7 @@ const {
 } = require('../controllers/giftList');
 
 const { NOT_FOUND_PAGE } = require('../utils/constants');
+const {loginWithSocials} = require("../controllers/users");
 
 router.get('/user/auth/vk', passport.authenticate('vkontakte', {
   scope: ['email', 'friends'],
@@ -28,17 +29,20 @@ router.get('/user/auth/vk/callback', (req, res, next) => {
       return res.redirect('/');
     }
 
-    return res.send(user);
+   return loginWithSocials(req,res,next,user);
+
+   // return res.send(user);
     // Authentication succeeded, redirect to successRedirect URL or handle the success response
   })(req, res, next);
 });
 
-router.get('/auth/mailru', passport.authenticate('mailru'));
+// router.get('/auth/mailru', passport.authenticate('mailru'));
+//
+// router.get('/auth/mailru/callback', passport.authenticate('mailru', {
+//   successRedirect: '/lists',
+//   failureRedirect: '/',
+// }));
 
-router.get('/auth/mailru/callback', passport.authenticate('mailru', {
-  successRedirect: '/lists',
-  failureRedirect: '/',
-}));
 router.use('', authRouter);
 // router.use('/user', authRouter);
 router.get('/lists/:id', getList);

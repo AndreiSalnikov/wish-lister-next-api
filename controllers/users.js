@@ -12,8 +12,27 @@ const {
   EMAIL_IS_BUSY,
 } = require('../utils/constants');
 
+module.exports.loginWithSocials = (req, res, next, user) => {
+  const {email} = user;
+
+  User.findOrCreate({email}, {email: user.email, name: user.displayName, avatar: user.ava, password: "-"})
+    .then((user) => {
+      const token = jwt.sign({_id: user._id}, config.JWT_SECRET);
+      res.cookie('token', token, {
+        maxAge: 3600000 * 24 * 7,
+        httpOnly: true,
+        sameSite: 'none',
+        secure: true,
+      }).json({message: 'Успешный вход'});
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+
 module.exports.getMe = (req, res, next) => {
-  const { _id } = req.user;
+  const {_id} = req.user;
   User.findById(_id)
     .then((user) => {
       if (user === null) {
@@ -34,17 +53,19 @@ module.exports.createUser = (req, res, next) => {
   const {
     name, email, password, reminder,
   } = req.body;
+
+  const lowercaseEmail = email.toLowerCase(); // Convert email to lowercase
   bcrypt.hash(password, 10)
     .then((hash) => User.create({
       name,
-      email,
+      email: lowercaseEmail, // Use the lowercase email
       reminder,
-      password: hash, // записываем хеш в базу
+      password: hash,
     }))
     .then((user) => res.send({
       _id: user._id,
       name,
-      email,
+      email: lowercaseEmail, // Send the lowercase email in the response
       reminder,
     }))
     .catch((err) => {
@@ -57,6 +78,7 @@ module.exports.createUser = (req, res, next) => {
       }
     });
 };
+
 
 module.exports.updateUser = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, req.body, {
@@ -87,7 +109,7 @@ module.exports.changePassword = (req, res, next) => {
 
   const userId = req.user._id;
 
-  const { currentPassword, newPassword } = req.body;
+  const {currentPassword, newPassword} = req.body;
 
   // Find the user by their ID
   User.findById(userId).select('+password')
@@ -134,7 +156,7 @@ module.exports.changePassword = (req, res, next) => {
 module.exports.logout = async (req, res, next) => {
   try {
     await res.clearCookie('token');
-    res.status(200).json( {message: 'Успешный выход'} );
+    res.status(200).json({message: 'Успешный выход'});
   } catch (err) {
     next(err);
   }
@@ -144,8 +166,8 @@ module.exports.deleteGiftReservationUser = (req, res, next) => {
 
   return User.findByIdAndUpdate(
     req.user._id,
-    { $pull: { reservedGifts: { _id: req.params.giftId } } }, // Use $pull with {_id: giftId}
-    { new: true },
+    {$pull: {reservedGifts: {_id: req.params.giftId}}}, // Use $pull with {_id: giftId}
+    {new: true},
   )
     .then((user) => {
       res.send(user);
@@ -169,7 +191,7 @@ module.exports.login = (req, res, next) => {
         httpOnly: true,
         sameSite: 'none',
         secure: true,
-      }).json( {message: 'Успешный вход'} );
+      }).json({message: 'Успешный вход'});
     })
     .catch((err) => {
       next(err);
@@ -177,10 +199,10 @@ module.exports.login = (req, res, next) => {
 };
 
 module.exports.updateAbout = (req, res, next) => {
-  const { about } = req.body;
+  const {about} = req.body;
   User.findByIdAndUpdate(
     req.user._id,
-    { about },
+    {about},
     {
       new: true,
       runValidators: true,

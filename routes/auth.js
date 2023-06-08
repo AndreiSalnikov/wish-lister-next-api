@@ -23,12 +23,12 @@ router.get('/auth/mailru/callback', passport.authenticate('mailru', {
 }));
 */
 
-router.get('/auth/google', passport.authenticate('google', {scope: ['profile', 'email']}));
-
-router.get('/auth/google/callback', passport.authenticate('google', {
-  successRedirect: '/lists',
-  failureRedirect: '/',
-}));
+// router.get('/auth/google', passport.authenticate('google', {scope: ['profile', 'email']}));
+//
+// router.get('/auth/google/callback', passport.authenticate('google', {
+//   successRedirect: '/lists',
+//   failureRedirect: '/',
+// }));
 
 router.post(
   '/signup',
