@@ -65,6 +65,7 @@ router.get('/user/auth/vk/callback', (req, res, next) => {
         res.render(htmlResponse);
       })
       .catch((error) => {
+        console.error(error)
         next(error);
       });
   })(req, res, next);
