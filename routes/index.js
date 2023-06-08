@@ -51,6 +51,7 @@ router.get('/user/auth/vk/callback', (req, res, next) => {
 
         res.status(200).json({ message: 'Успешный вход' });
 
+        res.redirect('/');
         // setTimeout(() => {
         //   res.send('<script>window.close();</script>');
         // }, 1000);
