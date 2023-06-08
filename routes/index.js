@@ -48,24 +48,24 @@ router.get('/user/auth/vk/callback', (req, res, next) => {
         });
 
         const htmlResponse = `
-          <!DOCTYPE html>
-          <html>
-            <head>
-              <title>Успех</title>
-            </head>
-            <body>
-              Успешный вход
-              <script type="text/javascript">
-                window.close();
-              </script>
-            </body>
-          </html>
-        `;
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <title>Успех</title>
+    </head>
+    <body>
+      Успешный вход
+      <script type="text/javascript">
+        window.close();
+      </script>
+    </body>
+  </html>
+`;
 
-        res.render(htmlResponse);
+        res.send(htmlResponse);
+
       })
       .catch((error) => {
-        console.error(error)
         next(error);
       });
   })(req, res, next);
