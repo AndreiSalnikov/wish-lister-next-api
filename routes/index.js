@@ -20,37 +20,6 @@ router.get('/user/auth/vk', passport.authenticate('vkontakte', {
   scope: ['email', 'friends'],
 }));
 
-/*router.get('/user/auth/vk/callback', (req, res, next) => {
-  passport.authenticate('vkontakte', (err, user, info) => {
-    if (err) {
-      // Handle the error here
-      console.error(err);
-      return res.redirect('/error'); // Redirect to an error page or handle the error response
-    }
-
-    if (!user) {
-      // Authentication failed, redirect to failureRedirect URL or handle the failure response
-      return res.redirect('/');
-    }
-
-    User.findOrCreate({email}, {email: email, name: user.displayName, avatar: user.ava, password: "-"})
-      .then((user1) => {
-        const token = jwt.sign({_id: user1._id}, config.JWT_SECRET);
-        res.cookie('token', token, {
-          maxAge: 3600000 * 24 * 7,
-          httpOnly: true,
-          sameSite: 'none',
-          secure: true,
-        }).json({message: 'Успешный вход'}).catch((err) => {
-          next(err);
-        });
-      })
-
-    // return res.send(user);
-    // Authentication succeeded, redirect to successRedirect URL or handle the success response
-  })(req, res, next);
-});*/
-
 router.get('/user/auth/vk/callback', (req, res, next) => {
   passport.authenticate('vkontakte', (err, user, info) => {
     if (err) {
@@ -63,13 +32,13 @@ router.get('/user/auth/vk/callback', (req, res, next) => {
     }
 
     const userData = {
-      email: user.email,
+      email: user.email.toLowerCase(),
       name: user.displayName,
       avatar: user.ava,
-      password: '-'
+      password: '-',
     };
 
-    User.findOrCreate(user.email, userData)
+    User.findOrCreate(user.email.toLowerCase(), userData)
       .then((user) => {
         const token = jwt.sign({ _id: user._id }, config.JWT_SECRET);
         res.cookie('token', token, {
@@ -77,13 +46,17 @@ router.get('/user/auth/vk/callback', (req, res, next) => {
           httpOnly: true,
           sameSite: 'none',
           secure: true,
-        }).json({ message: 'Успешный вход' });
+        });
+
+        // Send a response indicating successful authentication
+        res.status(200).json({ message: 'Успешный вход' });
       })
       .catch((err) => {
         next(err);
       });
   })(req, res, next);
 });
+
 
 // router.get('/auth/mailru', passport.authenticate('mailru'));
 //
