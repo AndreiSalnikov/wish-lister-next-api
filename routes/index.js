@@ -13,7 +13,7 @@ const giftListRouter = require('./giftList');
 const {
   getList,
 } = require('../controllers/giftList');
-const { NOT_FOUND_PAGE } = require('../utils/constants');
+const {NOT_FOUND_PAGE} = require('../utils/constants');
 
 router.get('/user/auth/vk', passport.authenticate('vkontakte', {
   scope: ['email', 'friends'],
@@ -48,13 +48,14 @@ router.get('/user/auth/vk/callback', (req, res, next) => {
         });
 
         // Send a response indicating successful authentication
-        const rs = { message: 'Успешный вход' };
-        const msg = rs.message;
-        res.status(200).json({ msg });
 
-        setTimeout(() => {
-          res.send('<script>window.close();</script>');
-        }, 1000);
+        res.status(200).json({message: 'Успешный вход'});
+
+        res.send('<script>window.opener.authCallback();</script>');
+
+        // setTimeout(() => {
+        //   res.send('<script>window.close();</script>');
+        // }, 1000);
 
       })
       .catch((error) => {
