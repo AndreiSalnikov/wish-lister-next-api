@@ -27,7 +27,7 @@ app.use(requestLogger);
 app.use(limiter);
 app.use(cors({
   credentials: true,
-  origin: ['http://localhost:3000', 'https://wish-lister.ru/'],
+  origin: ['http://localhost:3000', 'https://wish-lister.ru', 'https://wish-lister.ru'],
   methods: ['GET', 'POST', 'DELETE', 'PATCH', 'PUT'],
 }));
 
