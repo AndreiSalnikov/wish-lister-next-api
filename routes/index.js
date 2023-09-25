@@ -63,6 +63,15 @@ router.get('/user/auth/vk/callback', (req, res, next) => {
 //   failureRedirect: '/',
 // }));
 
+router.get('/test', async (req, res, next) => {
+  try {
+    res.send('test');
+  } catch (err) {
+    next(err);
+  }
+});
+
+
 router.use('', authRouter);
 // router.use('/user', authRouter);
 router.get('/lists/:id', getList);
