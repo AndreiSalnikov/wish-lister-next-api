@@ -2,7 +2,7 @@ const router = require('express').Router();
 const passport = require('passport');
 const {userRegistrationValidation, userLoginValidation} = require('../middlewares/serverDataValidation');
 const {
-  login, createUser, logout,
+  login, createUser, logout, getTest
 } = require('../controllers/users');
 
 /*router.get('/user/auth/vk', passport.authenticate('vkontakte', {
@@ -29,6 +29,10 @@ router.get('/auth/mailru/callback', passport.authenticate('mailru', {
 //   successRedirect: '/lists',
 //   failureRedirect: '/',
 // }));
+
+router.get('/tet11',
+          getTest,
+          )
 
 router.post(
   '/signup',
