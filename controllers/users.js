@@ -30,6 +30,10 @@ module.exports.loginWithSocials = (req, res, next, user) => {
     });
 };
 
+module.exports.getTest = (req, res, next) => {
+res.send('toster')
+};
+
 
 module.exports.getMe = (req, res, next) => {
   const {_id} = req.user;
